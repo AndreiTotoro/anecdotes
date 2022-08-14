@@ -15,23 +15,41 @@ const App = () => {
   const randomNumber = Math.floor((Math.random() * (anecdotes.length)))
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState([0, 0, 0, 0, 0, 0, 0])
+  const [mostVotes, setMostVotes] = useState(0)
 
   const changeAnecdote = () => {
     setSelected(randomNumber)
+  }
+
+  const checkHighest = (arr) => {
+    let max = 0;
+    let maxi = 0;
+    for(let i = 0; i < anecdotes.length; i++){
+      if(arr[i] > max){
+        max = arr[i]
+        maxi = i
+      }
+    }
+
+    setMostVotes(maxi)
   }
 
   const increasePoints = () => {
     const copy = [...points]
     copy[selected]++;
     setPoints(copy)
+    checkHighest(copy)
   }
 
   return (
     <div>
+      <h1>Anecdote:</h1>
       <p>{anecdotes[selected]}</p>
       <p>Number of votes: {points[selected]}</p>
       <button onClick={changeAnecdote}>Next Anecdote</button>
       <button onClick={increasePoints}>Vote</button>
+      <h1>Highest voted anecdote: </h1>
+      <p>{anecdotes[mostVotes]}</p>
     </div>
   )
 }
